@@ -78,55 +78,6 @@ router.get('/:post_id', auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/posts/:post_id/:comment_id
-// @desc    Updatet post by id
-// @access  Private
-router.put(
-  '/:post_id/:comment_id',
-  [
-    auth,
-    check('text', 'Text is required')
-      .not()
-      .isEmpty()
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { text } = req.body;
-
-    try {
-      const post = await Post.findById(req.params.post_id);
-
-      // Pull out comment
-      const comment = post.comments.find(
-        comment => comment.id === req.params.comment_id
-      );
-
-      // Make sure comment exists
-      if (!comment) {
-        return res.status(404).json({ msg: 'Comment does not exist' });
-      }
-
-      // Check user
-      if (comment.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: 'User not authorized' });
-      }
-
-      comment.text = text;
-
-      await post.save();
-
-      res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-);
-
 // @route   DELETE api/posts/:post_id
 // @desc    Delete a post
 // @access  Private
@@ -289,5 +240,54 @@ router.delete('/comment/:post_id/:comment_id', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route   PUT api/posts/:post_id/:comment_id
+// @desc    Updatet post by id
+// @access  Private
+router.put(
+  '/:post_id/:comment_id',
+  [
+    auth,
+    check('text', 'Text is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { text } = req.body;
+
+    try {
+      const post = await Post.findById(req.params.post_id);
+
+      // Pull out comment
+      const comment = post.comments.find(
+        comment => comment.id === req.params.comment_id
+      );
+
+      // Make sure comment exists
+      if (!comment) {
+        return res.status(404).json({ msg: 'Comment does not exist' });
+      }
+
+      // Check user
+      if (comment.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      comment.text = text;
+
+      await post.save();
+
+      res.json(post.comments);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;
