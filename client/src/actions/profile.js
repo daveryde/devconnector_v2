@@ -94,7 +94,7 @@ export const createProfile = (
       }
     };
 
-    const res = await axios.post('profile', formData, config);
+    const res = await axios.post('/profile', formData, config);
 
     dispatch({
       type: GET_PROFILE,

@@ -39,11 +39,11 @@ const EditProfile = ({
       githubusername:
         loading || !profile.githubusername ? '' : profile.githubusername,
       bio: loading || !profile.bio ? '' : profile.bio,
-      twitter: loading || !profile.twitter ? '' : profile.twitter,
-      facebook: loading || !profile.facebook ? '' : profile.facebook,
-      linkedin: loading || !profile.linkedin ? '' : profile.linkedin,
-      youtube: loading || !profile.youtube ? '' : profile.youtube,
-      instagram: loading || !profile.instagram ? '' : profile.instagram
+      twitter: loading || !profile.social ? '' : profile.social.twitter,
+      facebook: loading || !profile.social ? '' : profile.social.facebook,
+      linkedin: loading || !profile.social ? '' : profile.social.linkedin,
+      youtube: loading || !profile.social ? '' : profile.social.youtube,
+      instagram: loading || !profile.social ? '' : profile.social.instagram
     });
   }, [loading, getCurrentProfile]);
 
@@ -77,7 +77,7 @@ const EditProfile = ({
         <i className='fas fa-user' /> Let's get some information to make your
         profile stand out
       </p>
-      <small>* = required fields</small>
+      <small>* = required field</small>
       <form className='form' onSubmit={e => onSubmit(e)}>
         <div className='form-group'>
           <select name='status' value={status} onChange={e => onChange(e)}>
@@ -165,10 +165,9 @@ const EditProfile = ({
           />
           <small className='form-text'>Tell us a little about yourself</small>
         </div>
-
         <div className='my-2'>
           <button
-            onClick={e => toggleSocialInputs(!displaySocialInputs)}
+            onClick={() => toggleSocialInputs(!displaySocialInputs)}
             type='button'
             className='btn btn-light'
           >
@@ -176,7 +175,6 @@ const EditProfile = ({
           </button>
           <span>Optional</span>
         </div>
-
         {displaySocialInputs && (
           <Fragment>
             <div className='form-group social-input'>
@@ -189,7 +187,6 @@ const EditProfile = ({
                 onChange={e => onChange(e)}
               />
             </div>
-
             <div className='form-group social-input'>
               <i className='fab fa-facebook fa-2x' />
               <input
@@ -200,7 +197,6 @@ const EditProfile = ({
                 onChange={e => onChange(e)}
               />
             </div>
-
             <div className='form-group social-input'>
               <i className='fab fa-youtube fa-2x' />
               <input
@@ -211,7 +207,6 @@ const EditProfile = ({
                 onChange={e => onChange(e)}
               />
             </div>
-
             <div className='form-group social-input'>
               <i className='fab fa-linkedin fa-2x' />
               <input
@@ -222,7 +217,6 @@ const EditProfile = ({
                 onChange={e => onChange(e)}
               />
             </div>
-
             <div className='form-group social-input'>
               <i className='fab fa-instagram fa-2x' />
               <input
@@ -235,7 +229,6 @@ const EditProfile = ({
             </div>
           </Fragment>
         )}
-
         <input type='submit' className='btn btn-primary my-1' />
         <Link className='btn btn-light my-1' to='/dashboard'>
           Go Back
@@ -244,17 +237,14 @@ const EditProfile = ({
     </Fragment>
   );
 };
-
 EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
-
 const mapStateToProps = state => ({
   profile: state.profile
 });
-
 export default connect(
   mapStateToProps,
   { createProfile, getCurrentProfile }

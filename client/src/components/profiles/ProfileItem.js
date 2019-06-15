@@ -13,13 +13,13 @@ const ProfileItem = ({
 }) => {
   return (
     <div className='profile bg-light'>
-      <img src={avatar} alt='' className='round-img' />
+      <img src={avatar} alt='Profile Image' className='round-img' />
       <div>
         <h2>{name}</h2>
         <p>
           {status} {company && <span> at {company}</span>}
         </p>
-        <p className='my-1'>{location && <span>{location}</span>}</p>
+        <p>{location && <span>{location}</span>}</p>
         <Link to={`/profile/${_id}`} className='btn btn-primary'>
           View Profile
         </Link>
